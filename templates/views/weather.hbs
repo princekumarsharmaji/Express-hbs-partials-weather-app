@@ -25,7 +25,7 @@
                   <div class="main_layer">
                       <p id="city_name">Get output </p>
                       <div class="middle_layer">
-                          <p id="temp"><span>0</span><sup>o</sup>C</p>
+                          <p id="temp"><span id = "temp-real_val">0</span><sup>o</sup>C</p>
                           <p id="temp_status"><i class="fa-solid fa-clouds" aria-hidden="true"></i></p>
                       </div>
                   </div>
@@ -41,25 +41,40 @@
         const cityName = document.getElementById('cityName');
         const submitBtn =   document.getElementById("submitBtn");
         const city_name = document.getElementById('city_name');
+        const temp = document.getElementById('temp');
+        const temp_status = document.getElementById('temp_status');
 
 const getInfo =async (e) => {
      e.preventDefault();
-
-     let cityVal = cityName.value
-
-     
+      
+       let cityVal = cityName.value;
+    
+    
     if(cityVal === ""){
        city_name.innerText = "Please type the place"
     }else{
         try{
- let url = `api.openweathermap.org/data/2.5/weather?q=pune&appid=$c5cf0e7e525d469055cb3fc602e34e95`;
+       let url = `https://api.openweathermap.org/data/2.5/weather?q=${cityVal}&units=metric&appid=c5cf0e7e525d469055cb3fc602e34e95`;
 
          //let url = "f1e2f08ee3024080b1731508220603";
       const response = await fetch(url);
     console.log(response);
     const data = await response.json();
-    console.log(data)
-       }catch(error){
+    console.log(data);
+    const arrData = [data];
+      temp.innerText = arrData[0].main.temp;
+      temp_status.innerText = arrData[0].weather[0].main;
+      city_name.innerText = `${arrData[0].name}, ${arrData[0].sys.country}`;
+
+      {/*const tempMood = arrData[0].weather[0].main;
+
+      if(tempMood === "Clouds"){temp_status.innerHTML =
+          "<i class="fa-solid fa-snowflake"></i>"
+      }else{
+          
+      }*/}
+
+                   }catch(error){
             alert(error)
         }
      
